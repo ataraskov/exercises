@@ -2,17 +2,48 @@ package main
 
 import "reflect"
 
-func walk(x interface{}, fn func(intput string)) {
+func getValue(x interface{}) reflect.Value {
 	val := reflect.ValueOf(x)
 
-	for i := 0; i < val.NumField(); i++ {
-		field := val.Field(i)
-
-		switch field.Kind() {
-		case reflect.String:
-			fn(field.String())
-		case reflect.Struct:
-			walk(field.Interface(), fn)
-		}
+	if val.Kind() == reflect.Ptr {
+		val = val.Elem()
 	}
+
+	return val
+}
+
+func walk(x interface{}, fn func(intput string)) {
+	val := getValue(x)
+
+	walkValue := func(value reflect.Value) {
+		walk(value.Interface(), fn)
+	}
+
+	switch val.Kind() {
+	case reflect.Slice, reflect.Array:
+		for i := 0; i < val.Len(); i++ {
+			walkValue(val.Index(i))
+		}
+	case reflect.Struct:
+		for i := 0; i < val.NumField(); i++ {
+			walkValue(val.Field(i))
+		}
+	case reflect.Map:
+		for _, key := range val.MapKeys() {
+			walkValue(val.MapIndex(key))
+		}
+	case reflect.Chan:
+		for v, ok := val.Recv(); ok; v, ok = val.Recv() {
+			walkValue(v)
+		}
+	case reflect.Func:
+		valFnResult := val.Call(nil)
+		for _, res := range valFnResult {
+			walkValue(res)
+		}
+	case reflect.String:
+		fn(val.String())
+	}
+
+	// Now that you know about reflection, do your best to avoid using it.
 }
