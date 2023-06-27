@@ -1,3 +1,4 @@
+// Pacakge clock implements simple clock type
 package clock
 
 import "fmt"
@@ -7,15 +8,15 @@ type Clock struct {
 }
 
 func New(h, m int) Clock {
-	return Clock{0}.Add((h*60 + m) % 1440)
+	return Clock{min: (1440 + (h*60+m)%1440) % 1440}
 }
 
 func (c Clock) Add(m int) Clock {
-	return Clock{min: (1440 + c.min + m) % 1440}
+	return New(0, c.min+m)
 }
 
 func (c Clock) Subtract(m int) Clock {
-	return c.Add(-m % 1440)
+	return New(0, c.min-m)
 }
 
 func (c Clock) String() string {
