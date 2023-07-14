@@ -1,3 +1,4 @@
+// Package phoneNumber provides functionality for parsing phone numbers.
 package phonenumber
 
 import (
@@ -12,6 +13,7 @@ var (
 	InvalidSubscriber = errors.New("invalid subscriber")
 )
 
+// Number parses a phone number.
 func Number(phoneNumber string) (string, error) {
 	res := []rune{}
 	for _, r := range phoneNumber {
@@ -35,6 +37,7 @@ func Number(phoneNumber string) (string, error) {
 	return string(res), nil
 }
 
+// AreaCode returns the area code of a phone number.
 func AreaCode(phoneNumber string) (string, error) {
 	res, err := Number(phoneNumber)
 	if err != nil {
@@ -43,6 +46,7 @@ func AreaCode(phoneNumber string) (string, error) {
 	return res[0:3], nil
 }
 
+// Format formats a phone number.
 func Format(phoneNumber string) (string, error) {
 	res, err := Number(phoneNumber)
 	if err != nil {
