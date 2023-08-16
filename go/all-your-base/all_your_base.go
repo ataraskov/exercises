@@ -2,7 +2,6 @@ package allyourbase
 
 import (
 	"errors"
-	"fmt"
 	"math"
 )
 
@@ -42,9 +41,6 @@ func fromDigits(base int, digits []int) (int, error) {
 
 func toDigits(base int, num int) []int {
 	res := []int{}
-	if num == 5 && base == 2 {
-		fmt.Println("debug")
-	}
 	for n := num; n >= 0; n = int(math.Floor(float64(n) / float64(base))) {
 		if n < base {
 			res = append([]int{n}, res...)
