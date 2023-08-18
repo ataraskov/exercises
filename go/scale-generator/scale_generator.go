@@ -23,7 +23,7 @@ var (
 // index return index if an element in the slice, or -1 if not found
 func index(s []string, elem string) int {
 	for i, e := range s {
-		if elem == e {
+		if strings.EqualFold(elem, e) {
 			return i
 		}
 	}
@@ -33,23 +33,26 @@ func index(s []string, elem string) int {
 func Scale(tonic, interval string) []string {
 	var scale []string
 	switch {
-	case index(FlatKeys, tonic) >= 0:
+	case tonic != strings.ToLower(tonic) && index(FlatKeys, tonic) >= 0:
 		scale = FlatScale
-	case index(FlatKeysMinor, tonic) >= 0:
+	case tonic == strings.ToLower(tonic) && index(FlatKeysMinor, tonic) >= 0:
 		scale = FlatScale
 	default:
 		scale = SharpScale
 	}
 
 	res := []string{}
-	offset := index(scale, strings.ToUpper(tonic))
+	offset := index(scale, tonic)
 	if len(interval) == 0 {
 		interval = strings.Repeat("m", 11)
 	}
 	interval = "m" + interval
 	for i := 0; i < len(interval); i++ {
-		if i > 0 && interval[i] == 'M' {
+		switch interval[i] {
+		case 'M':
 			offset += 1
+		case 'A':
+			offset += 2
 		}
 		index := (offset + i) % len(scale)
 		res = append(res, scale[index])
