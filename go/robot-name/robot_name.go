@@ -3,12 +3,11 @@ package robotname
 
 import (
 	"fmt"
-	"math/rand"
 )
 
 var (
 	initialized = false
-	names       = []string{}
+	names       = map[string]bool{}
 	letters     = []rune("ABCDEFGHIJKLMNOPQRSTUVWXYZ")
 )
 
@@ -27,7 +26,7 @@ func populateNames() {
 					string(letters[l2]),
 					i,
 				)
-				names = append(names, s)
+				names[s] = true
 			}
 		}
 	}
@@ -35,15 +34,18 @@ func populateNames() {
 }
 
 // Name returns robot's name
-// TODO: very inefficient, need to use a map with delete op instead
 func (r *Robot) Name() (string, error) {
 	if !initialized {
 		populateNames()
 	}
 	if r.name == "" {
-		i := rand.Intn(len(names))
-		r.name = names[i]
-		names = append(names[:i], names[i+1:]...)
+		if len(names) == 0 {
+			return "", fmt.Errorf("namespace exhausted")
+		}
+		for k := range names {
+			r.name = k
+		}
+		delete(names, r.name)
 	}
 	return r.name, nil
 }
