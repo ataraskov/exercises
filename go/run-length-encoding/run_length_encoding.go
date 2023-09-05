@@ -11,47 +11,27 @@ import (
 func RunLengthEncode(input string) string {
 	buf := bytes.Buffer{}
 
-	var priv rune
+	var prev rune
 	counter := 1
+	encode := func(b bytes.Buffer, c int, r rune) {
+		if c > 1 {
+			buf.WriteString(fmt.Sprintf("%d", c))
+		}
+		buf.WriteRune(r)
+	}
 
 	for i, r := range input {
-		if r == priv {
+		if r == prev {
 			counter++
 		}
-		if i > 0 && r != priv {
-			if counter > 1 {
-				buf.WriteString(fmt.Sprintf("%d", counter))
-			}
-			buf.WriteRune(priv)
+		if i > 0 && r != prev {
+			encode(buf, counter, prev)
 			counter = 1
 		}
 		if i+1 == len(input) {
-			if counter > 1 {
-				buf.WriteString(fmt.Sprintf("%d", counter))
-			}
-			buf.WriteRune(r)
+			encode(buf, counter, r)
 		}
-		priv = r
-		/*
-			if i == 0 {
-				priv = r
-				continue
-			}
-			if i > 0 && r == priv {
-				counter++
-				if i+1 != len(input) {
-					continue
-				}
-			}
-			if counter > 1 {
-				buf.WriteString(fmt.Sprintf("%d", counter))
-				buf.WriteRune(priv)
-				counter = 1
-				continue
-			}
-			buf.WriteRune(r)
-			priv = r
-		*/
+		prev = r
 	}
 	return buf.String()
 }
