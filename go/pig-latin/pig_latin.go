@@ -34,9 +34,9 @@ func word(word string) string {
 
 // word returns a sentence translated to pig-latin
 func Sentence(sentence string) string {
-	res := ""
-	for _, w := range strings.Split(sentence, " ") {
-		res += word(w) + " "
+	words := strings.Split(sentence, " ")
+	for i, w := range words {
+		words[i] = word(w)
 	}
-	return strings.TrimRight(res, " ")
+	return strings.Join(words, " ")
 }
