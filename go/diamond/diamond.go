@@ -30,6 +30,7 @@ func Gen(char byte) (string, error) {
 		line += string(c)
 		line += strings.Repeat(filler, int(inner))
 		// right side
+		// we dont need exact copy, but first char ommited
 		if inner > 0 {
 			line += strings.Repeat(filler, int(inner-1))
 			line += string(c)
