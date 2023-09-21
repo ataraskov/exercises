@@ -4,23 +4,25 @@ package yacht
 // Score returns a score for given dices within category.
 func Score(dice []int, category string) int {
 	count := make(map[int]int)
+	sum := 0
 	for _, n := range dice {
 		count[n]++
+		sum += n
+	}
+
+	cat2num := map[string]int{
+		"ones":   1,
+		"twos":   2,
+		"threes": 3,
+		"fours":  4,
+		"fives":  5,
+		"sixes":  6,
 	}
 
 	switch category {
-	case "ones":
-		return count[1] * 1
-	case "twos":
-		return count[2] * 2
-	case "threes":
-		return count[3] * 3
-	case "fours":
-		return count[4] * 4
-	case "fives":
-		return count[5] * 5
-	case "sixes":
-		return count[6] * 6
+	case "ones", "twos", "threes", "fours", "fives", "sixes":
+		n := cat2num[category]
+		return count[n] * n
 	case "full house":
 		if len(count) == 2 {
 			sum := 0
@@ -46,20 +48,11 @@ func Score(dice []int, category string) int {
 			return 30
 		}
 	case "choice":
-		return sum(dice)
+		return sum
 	case "yacht":
 		if len(count) == 1 {
 			return 50
 		}
 	}
 	return 0
-}
-
-// sum returns a sum of slice elements
-func sum(arr []int) int {
-	sum := 0
-	for i := range arr {
-		sum += arr[i]
-	}
-	return sum
 }
