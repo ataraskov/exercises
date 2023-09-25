@@ -58,11 +58,11 @@ func Verse(v int) string {
 }
 
 func Verses(start, end int) string {
-	b := strings.Builder{}
+	res := make([]string, 0, end-start+1)
 	for i := start; i <= end; i++ {
-		b.WriteString(Verse(i) + "\n\n")
+		res = append(res, Verse(i))
 	}
-	return strings.TrimRight(b.String(), "\n")
+	return strings.Join(res, "\n\n")
 }
 
 func Song() string {
