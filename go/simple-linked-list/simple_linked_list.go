@@ -16,18 +16,12 @@ type List struct {
 
 // New creates a linked list from given slice
 func New(elements []int) *List {
-	var head *Element
-	var prev *Element
+	list := &List{}
+
 	for _, e := range elements {
-		elem := &Element{Value: e}
-		if head == nil {
-			head = elem
-		} else {
-			prev.next = elem
-		}
-		prev = elem
+		list.Push(e)
 	}
-	return &List{head: head}
+	return list
 }
 
 // Size returns count of elements
