@@ -40,6 +40,10 @@ func (l *List) Size() int {
 }
 
 // Push adds an element to the tail
+// Notice: it's very inefficient approach to manipulate the tail element
+//
+//	while we have easy access to the head one
+//	But, at least my solution is not copycat from other ones
 func (l *List) Push(element int) {
 	elem := l.head
 	for elem != nil {
@@ -53,6 +57,7 @@ func (l *List) Push(element int) {
 }
 
 // Pop removes the tail element
+// See notice for Push()
 func (l *List) Pop() (int, error) {
 	elem := l.head
 	if l == nil || l.head == nil {
