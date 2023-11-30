@@ -12,6 +12,9 @@ func Annotate(board []string) []string {
 	for i := range board {
 		cell[i] = ([]rune)(board[i])
 	}
+
+	// for every bomb found, increment bomb count around it
+	// probably counting bomb around empty cells will be more performant approach
 	for l := 0; l < len(cell); l++ {
 		for c := 0; c < len(cell[l]); c++ {
 			if cell[l][c] == '*' {
