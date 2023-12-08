@@ -7,9 +7,7 @@ import (
 )
 
 // Matrix represents a two dimensional map of tree hights.
-type Matrix struct {
-	arr [][]int
-}
+type Matrix [][]int
 
 // Pair holds coordinates of a tree in a Matrix.
 type Pair struct {
@@ -19,27 +17,28 @@ type Pair struct {
 
 // New creates a Matrix from given string.
 func New(s string) (*Matrix, error) {
-	if len(s) == 0 {
-		return &Matrix{}, nil
-	}
-	arr := [][]int{}
-	for ri, row := range strings.Split(s, "\n") {
-		arr = append(arr, []int{})
-		for _, v := range strings.Split(row, " ") {
-			n, err := strconv.Atoi(v)
+	rows := strings.Split(s, "\n")
+	m := make(Matrix, len(rows))
+
+	for ri, row := range rows {
+		cells := strings.Fields(row)
+		m[ri] = make([]int, len(cells))
+		for ci, cell := range cells {
+			val, err := strconv.Atoi(cell)
 			if err != nil {
 				return nil, err
 			}
-			arr[ri] = append(arr[ri], n)
+			m[ri][ci] = val
 		}
 	}
-	return &Matrix{arr: arr}, nil
+	return &m, nil
 }
 
 // Saddle returns pairs of good candidates for a tree house.
+// NOTICE: not performant solution, better to find min/max once
 func (m *Matrix) Saddle() []Pair {
 	res := []Pair{}
-	for ri, row := range m.arr {
+	for ri, row := range *m {
 		for ci, v := range row {
 			// highest in the row
 			rok := true
@@ -54,8 +53,8 @@ func (m *Matrix) Saddle() []Pair {
 			}
 			// lowest in the column
 			cok := true
-			for i := 0; i < len(m.arr); i++ {
-				if v > m.arr[i][ci] {
+			for i := 0; i < len(*m); i++ {
+				if v > (*m)[i][ci] {
 					cok = false
 					break
 				}
