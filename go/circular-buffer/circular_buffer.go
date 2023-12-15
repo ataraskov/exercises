@@ -11,6 +11,8 @@ import "fmt"
 // replacement for anything using that interface.
 
 // Buffer type
+// NOTICE: Using a channel would probably be
+// a much cleaner solution, though not a performant one
 type Buffer struct {
 	buf        []byte
 	full       bool
@@ -43,7 +45,6 @@ func (b *Buffer) ReadByte() (byte, error) {
 // WriteBytes writes next byte to the buffer
 // Errors if buffer is full already
 func (b *Buffer) WriteByte(c byte) error {
-	fmt.Println("writeIndex", b.writeIndex, "readIndex", b.readIndex)
 	if b.full {
 		return fmt.Errorf("buffer full")
 	}
