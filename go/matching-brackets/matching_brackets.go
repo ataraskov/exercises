@@ -14,10 +14,7 @@ func Bracket(input string) bool {
 		case r == '[':
 			queue = append([]rune{']'}, queue...)
 		case r == ')' || r == '}' || r == ']':
-			if len(queue) == 0 {
-				return false
-			}
-			if queue[0] != r {
+			if len(queue) == 0 || queue[0] != r {
 				return false
 			}
 			queue = queue[1:]
