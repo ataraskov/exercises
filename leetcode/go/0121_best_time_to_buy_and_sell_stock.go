@@ -7,21 +7,19 @@ package main
 // [3,2,1] => 0
 // [2,1,3] => 2
 func maxProfit(prices []int) int {
-	max := func(prices []int) int {
-		max := 0
-		for _, n := range prices {
-			if n > max {
-				max = n
-			}
-		}
-		return max
+	if len(prices) == 0 {
+		return 0
 	}
 
 	profit := 0
-	for i := 0; i < len(prices)-1; i++ {
-		n := max(prices[i+1:]) - prices[i]
-		if n > profit {
-			profit = n
+	min := prices[0]
+	for _, price := range prices {
+		if price < min {
+			min = price
+		} else {
+			if profit < price-min {
+				profit = price - min
+			}
 		}
 	}
 	return profit
