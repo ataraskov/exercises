@@ -1,6 +1,6 @@
 package main
 
-import "fmt"
+import "strconv"
 
 // Problem: https://leetcode.com/problems/summary-ranges/
 
@@ -11,6 +11,10 @@ import "fmt"
 // [1,2,5,6] => "1->2,5->6"
 
 func summaryRanges(nums []int) []string {
+	// brute force
+	// -------------------------------------------------------------------------
+	// complexity: O(n)
+	// space: O(1)
 	if len(nums) < 1 {
 		return []string{}
 	}
@@ -31,7 +35,7 @@ func summaryRanges(nums []int) []string {
 
 func add(result []string, start, end int) []string {
 	if start != end {
-		return append(result, fmt.Sprintf("%d->%d", start, end))
+		return append(result, strconv.Itoa(start)+"->"+strconv.Itoa(end))
 	}
-	return append(result, fmt.Sprintf("%d", start))
+	return append(result, strconv.Itoa(start))
 }
