@@ -14,10 +14,11 @@ func Test_backspaceCompare(t *testing.T) {
 		args args
 		want bool
 	}{
-		{"1", args{"", ""}, true},
+		{"4", args{"a", "A"}, false},
+		{"0", args{"", ""}, true},
+		{"1", args{"abc", "abc"}, true},
 		{"2", args{"ab#c", "ad#c"}, true},
 		{"3", args{"ab##", "c#d#"}, true},
-		{"4", args{"a", "A"}, false},
 		{"5", args{"gt##", "g#"}, true},
 		{"6", args{"abc#d##", "a"}, true},
 		{"7", args{"ab##", "c#d#"}, true},
