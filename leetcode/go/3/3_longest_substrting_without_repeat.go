@@ -15,9 +15,7 @@ func lengthOfLongestSubstring(s string) int {
 			if seen[r] {
 				break
 			}
-			if j-i+1 > n {
-				n = j - i + 1
-			}
+			n = max(n, j-i+1)
 			seen[r] = true
 		}
 	}
