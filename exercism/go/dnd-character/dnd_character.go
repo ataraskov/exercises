@@ -17,11 +17,8 @@ type Character struct {
 
 // Modifier calculates the ability modifier for a given ability score
 func Modifier(score int) int {
-	n := float64(score-10) / 2
-	if n < 0 {
-		return int(math.Floor(n))
-	}
-	return int(n)
+	return int(math.Floor(float64(score-10) / 2))
+
 }
 
 // Ability uses randomness to generate the score for an ability
