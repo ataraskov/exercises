@@ -18,7 +18,7 @@ func ChooseVehicle(option1, option2 string) string {
 // CalculateResellPrice calculates how much a vehicle can resell for at a certain age.
 func CalculateResellPrice(originalPrice, age float64) float64 {
 	value := 0.7
-	if age <= 3 {
+	if age < 3 {
 		value = 0.8
 	} else if age >= 10 {
 		value = 0.5
